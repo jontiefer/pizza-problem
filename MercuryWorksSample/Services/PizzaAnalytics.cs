@@ -34,8 +34,6 @@ public class PizzaAnalytics
     {
         var maxCount = 0;
 
-        var mostPreferredList = mostPreferred.ToList();
-
         maxCount = mostPreferred.First().Value;
 
         foreach (var item in mostPreferred)
