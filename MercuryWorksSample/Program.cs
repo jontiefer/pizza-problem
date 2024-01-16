@@ -6,11 +6,11 @@ using MercuryWorksSample.Services;
 var pizzaAnalytics = new PizzaAnalytics("./Data/Data.json");
 
 Console.WriteLine("Which department has the largest number of employees who like Pineapple on their pizzas?");
-Console.WriteLine(pizzaAnalytics.GetDepartmentWithLargestNumberOfEmployeesWhoLovePineapple());
-Console.WriteLine();
+Console.WriteLine(JsonSerializer.Serialize(pizzaAnalytics.GetDepartmentWithLargestNumberOfEmployeesWhoLovePineapple()));
+ Console.WriteLine();
 
 Console.WriteLine("Which department prefers Peperoni and Onions?");
-Console.WriteLine(pizzaAnalytics.GetDepartmentThatPrefersPepperoniAndOnions());
+Console.WriteLine(JsonSerializer.Serialize(pizzaAnalytics.GetDepartmentThatPrefersPepperoniAndOnions()));
 Console.WriteLine();
 
 Console.WriteLine("How many people prefer Anchovies?");

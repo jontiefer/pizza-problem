@@ -17,17 +17,37 @@ public class PizzaAnalytics
         CompanyPizzaData = pizzaDataLoader.LoadData(fileName);
     }
 
-    public string GetDepartmentWithLargestNumberOfEmployeesWhoLovePineapple() =>
-        CompanyPizzaData.DepartmentCountByTopping
+    public IEnumerable<string> GetDepartmentWithLargestNumberOfEmployeesWhoLovePineapple() =>
+        GetMostPreferredList(CompanyPizzaData.DepartmentCountByTopping
             .Where(x => x.Key == "Pineapple")
-            .Max(x => x.Value)!
-            .First().Key;
+            .SelectMany(x => x.Value)
+            .OrderByDescending(x => x.Value).ToList());
 
-    public string GetDepartmentThatPrefersPepperoniAndOnions() =>
-         CompanyPizzaData.DepartmentCountByToppingCombo
-            .Where(x => x.Key.OrderBy(i => i).SequenceEqual(new [] { "Pepperoni", "Onions" }.OrderBy(i => i)))
-            .Max(x => x.Value)!
-            .First().Key;
+
+    public IEnumerable<string> GetDepartmentThatPrefersPepperoniAndOnions() =>
+        GetMostPreferredList(CompanyPizzaData.DepartmentCountByToppingCombo
+            .Where(x => x.Key.OrderBy(i => i).SequenceEqual(new[] { "Pepperoni", "Onions" }.OrderBy(i => i)))
+            .SelectMany(x => x.Value)
+            .OrderByDescending(x => x.Value).ToList());
+
+    private IEnumerable<string> GetMostPreferredList(List<KeyValuePair<string, int>> mostPreferred)
+    {
+        var maxCount = 0;
+
+        var mostPreferredList = mostPreferred.ToList();
+
+        maxCount = mostPreferred.First().Value;
+
+        foreach (var item in mostPreferred)
+        {
+            if(item.Value == maxCount)
+                yield return item.Key;
+            else
+                yield break;
+        }
+    }
+
+
 
     public int GetEmployeeCountThatPreferAnchovies() =>
         CompanyPizzaData.DepartmentCountByTopping
